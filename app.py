@@ -275,10 +275,6 @@ class NetworkScanner:
         if new_devices or lost_devices:
             try:
                 from email_utils import send_email
-                import os
-                EMAIL_SENDER = os.getenv("EMAIL_SENDER", "add your email here")
-                EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", "add your email here")
-                EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD", "add your email key here")
                 subject = "Network Scan Alert: Change Detected"
                 body_lines = []
                 if new_devices:
