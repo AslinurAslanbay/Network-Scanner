@@ -1,0 +1,2 @@
+# Network Scanner
+Network Scan System is a Python-based web application that scans your local network to detect connected devices. It shows device details such as IP, MAC address, manufacturer, and open ports. The system also supports real-time monitoring and sends email notifications when a device connects or disconnects.  Tech Stack:  Backend: Python (Flask, Scapy, python-nmap, mac-vendor-lookup)  Frontend: HTML, CSS, JavaScript, Figma (UI design)  Data: JSON for storing scan history
