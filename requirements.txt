@@ -1,0 +1,4 @@
+Flask==2.3.3
+Flask-CORS==4.0.0
+scapy==2.5.0
+mac-vendor-lookup==0.1.10 

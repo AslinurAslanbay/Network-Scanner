@@ -1,0 +1,661 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0B0E15;
+  color: #fff;
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: #14121C;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  color: #B99AFF;
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #A9A3B3;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background: #1F1A2E;
+  color: #fff;
+}
+
+main {
+  padding: 24px;
+  margin-left: 240px;
+  width: calc(100vw - 240px);
+  box-sizing: border-box;
+  min-height: 100vh;
+  position: relative;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+.ip-info {
+  color: #A9A3B3;
+  font-size: 14px;
+}
+
+.kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #181523;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.kpi h3 {
+  font-size: 14px;
+  color: #B99AFF;
+  margin: 0 0 8px;
+}
+
+.kpi p {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.search-bar button {
+  background: linear-gradient(90deg, #8A63FF, #6B4DE5);
+  color: #fff;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: linear-gradient(90deg, #9C78FF, #7C63E5);
+}
+
+#stopBtn {
+  background: #FF6B6B;
+}
+
+#stopBtn:hover {
+  background: #FF8282;
+}
+
+.status {
+  margin: 14px 0;
+  font-weight: 500;
+  color: #B99AFF;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #1F1A2E;
+  color: #B99AFF;
+}
+
+tr {
+  background: #181523;
+}
+
+tr:nth-child(even) {
+  background: #1C182A;
+}
+
+tr:hover {
+  background: #242036;
+}
+
+.row-icon {
+  width: 42px;
+  text-align: center;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 7px;
+}
+
+.status-up { background: #27C46B; }
+.status-down { background: #FF6B6B; }
+.status-unknown { background: #A9A3B3; }
+
+.device-name { font-weight: 500; color: #fff; }
+.mac { color: #A9A3B3; font-size: 13px; }
+.manufacturer { color: #5DA9FF; font-size: 14px; }
+
+/* İlave: inline olan bazı görünümler HTML tarafında yönetilecek */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.results-header h2 { margin: 0; }
+
+#historyDateFilter {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #B99AFF;
+  color: #fff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.date-filter-input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#noHistoryMsg {
+  display: none;
+  color: #B99AFF;
+  margin-top: 18px;
+}
+
+#resultTable {
+  display: none;
+}
+
+.scan-mode-section {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.manual-range-container {
+  display: none;
+  flex: 1;
+  min-width: 300px;
+}
+
+.manual-range-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #2A2438;
+  border-radius: 8px;
+  background: #1F1A2E;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.manual-range-input:focus {
+  outline: none;
+  border-color: #B99AFF;
+  box-shadow: 0 0 0 2px rgba(185, 154, 255, 0.2);
+}
+
+.manual-range-input::placeholder {
+  color: #A9A3B3;
+  opacity: 0.7;
+}
+
+/* Light theme için manuel range input */
+body.light-theme .manual-range-input {
+  border: 1px solid #ced4da;
+  background: #ffffff;
+  color: #333;
+}
+
+body.light-theme .manual-range-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+body.light-theme .manual-range-input::placeholder {
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+/* Settings Styles */
+.settings-container {
+  max-width: 800px;
+}
+
+.setting-group {
+  background: #181523;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.setting-group h3 {
+  color: #B99AFF;
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.setting-item {
+  margin-bottom: 16px;
+}
+
+.setting-item label {
+  display: block;
+  margin-bottom: 8px;
+  color: #A9A3B3;
+  font-weight: 500;
+}
+
+.setting-item select,
+.setting-item input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #2A2438;
+  border-radius: 8px;
+  background: #1F1A2E;
+  color: #fff;
+  font-size: 14px;
+}
+
+.setting-item select:focus,
+.setting-item input[type="email"]:focus {
+  outline: none;
+  border-color: #B99AFF;
+}
+
+.theme-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.preview-card {
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.preview-card:hover {
+  border-color: #B99AFF;
+}
+
+.preview-card h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.preview-card p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Dark Theme Preview */
+.dark-preview {
+  background: #181523;
+  color: #fff;
+}
+
+.dark-preview h4 {
+  color: #B99AFF;
+}
+
+/* Light Theme Preview */
+.light-preview {
+  background: #f8f9fa;
+  color: #333;
+}
+
+.light-preview h4 {
+  color: #6c757d;
+}
+
+/* Light Theme Styles */
+body.light-theme {
+  background: #f8f9fa;
+  color: #333;
+}
+
+body.light-theme .sidebar {
+  background: #ffffff;
+}
+
+body.light-theme .sidebar h2 {
+  color: #6c757d;
+}
+
+body.light-theme .sidebar li {
+  color: #6c757d;
+}
+
+body.light-theme .sidebar li.active,
+body.light-theme .sidebar li:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+body.light-theme .kpi {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.light-theme .kpi h3 {
+  color: #6c757d;
+}
+
+body.light-theme .kpi p {
+  color: #333;
+}
+
+body.light-theme .search-bar button {
+  background: linear-gradient(90deg, #007bff, #0056b3);
+}
+
+body.light-theme .search-bar button:hover {
+  background: linear-gradient(90deg, #0056b3, #004085);
+}
+
+body.light-theme #stopBtn {
+  background: #dc3545;
+}
+
+body.light-theme #stopBtn:hover {
+  background: #c82333;
+}
+
+body.light-theme .status {
+  color: #6c757d;
+}
+
+body.light-theme th {
+  background: #e9ecef;
+  color: #495057;
+}
+
+body.light-theme tr {
+  background: #ffffff;
+}
+
+body.light-theme tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+body.light-theme tr:hover {
+  background: #e9ecef;
+}
+
+body.light-theme .device-name {
+  color: #333;
+}
+
+body.light-theme .mac {
+  color: #6c757d;
+}
+
+body.light-theme .manufacturer {
+  color: #007bff;
+}
+
+body.light-theme .setting-group {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.light-theme .setting-group h3 {
+  color: #6c757d;
+}
+
+body.light-theme .setting-item label {
+  color: #495057;
+}
+
+body.light-theme .setting-item select,
+body.light-theme .setting-item input[type="email"] {
+  border: 1px solid #ced4da;
+  background: #ffffff;
+  color: #333;
+}
+
+body.light-theme .setting-item select:focus,
+body.light-theme .setting-item input[type="email"]:focus {
+  border-color: #007bff;
+}
+
+body.light-theme .preview-card.dark-preview {
+  background: #181523;
+  color: #fff;
+}
+
+body.light-theme .preview-card.light-preview {
+  background: #f8f9fa;
+  color: #333;
+}
+
+body.light-theme #historyDateFilter {
+  background: #007bff;
+  color: #fff;
+}
+
+body.light-theme .date-filter-input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Settings için ek stiller */
+.setting-item small {
+  color: #A9A3B3;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.setting-item textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #2A2438;
+  border-radius: 8px;
+  background: #1F1A2E;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  resize: vertical;
+}
+
+.setting-item textarea:focus {
+  outline: none;
+  border-color: #B99AFF;
+}
+
+.setting-item input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #2A2438;
+  border-radius: 8px;
+  background: #1F1A2E;
+  color: #fff;
+  font-size: 14px;
+}
+
+.setting-item input[type="number"]:focus {
+  outline: none;
+  border-color: #B99AFF;
+}
+
+.setting-item input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.2);
+}
+
+/* Light theme için yeni ayarlar */
+body.light-theme .setting-item small {
+  color: #6c757d;
+}
+
+body.light-theme .setting-item textarea {
+  border: 1px solid #ced4da;
+  background: #ffffff;
+  color: #333;
+}
+
+body.light-theme .setting-item textarea:focus {
+  border-color: #007bff;
+}
+
+body.light-theme .setting-item input[type="number"] {
+  border: 1px solid #ced4da;
+  background: #ffffff;
+  color: #333;
+}
+
+body.light-theme .setting-item input[type="number"]:focus {
+  border-color: #007bff;
+}
+
+/* Settings butonları */
+.settings-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.settings-btn {
+  background: linear-gradient(90deg, #8A63FF, #6B4DE5);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+  background: linear-gradient(90deg, #9C78FF, #7C63E5);
+  transform: translateY(-1px);
+}
+
+.settings-btn i {
+  font-size: 16px;
+}
+
+#resetSettingsBtn {
+  background: linear-gradient(90deg, #FF6B6B, #E55555);
+}
+
+#resetSettingsBtn:hover {
+  background: linear-gradient(90deg, #FF8282, #E66666);
+}
+
+#exportSettingsBtn {
+  background: linear-gradient(90deg, #27C46B, #1E9B4F);
+}
+
+#exportSettingsBtn:hover {
+  background: linear-gradient(90deg, #2ED573, #26D065);
+}
+
+/* Light theme için butonlar */
+body.light-theme .settings-btn {
+  background: linear-gradient(90deg, #007bff, #0056b3);
+}
+
+body.light-theme .settings-btn:hover {
+  background: linear-gradient(90deg, #0056b3, #004085);
+}
+
+body.light-theme #resetSettingsBtn {
+  background: linear-gradient(90deg, #dc3545, #c82333);
+}
+
+body.light-theme #resetSettingsBtn:hover {
+  background: linear-gradient(90deg, #c82333, #bd2130);
+}
+
+body.light-theme #exportSettingsBtn {
+  background: linear-gradient(90deg, #28a745, #1e7e34);
+}
+
+body.light-theme #exportSettingsBtn:hover {
+  background: linear-gradient(90deg, #1e7e34, #155724);
+}
+
+/* Bildirim animasyonları */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+

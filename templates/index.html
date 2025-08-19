@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Network Scan System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Network Scanner</h2>
+    <ul>
+      <li class="active" id="dashboardTab" data-translate="Dashboard">Dashboard</li>
+      <li id="scanResultsTab" data-translate="Scan Results">Scan Results</li>
+      <li id="settingsTab" data-translate="Settings">Settings</li>
+    </ul>
+  </div>
+
+  <main>
+    <div class="header">
+      <h1 data-translate="Network Scan System">Network Scan System</h1>
+      <div class="ip-info" id="ipInfo">Loading...</div>
+    </div>
+
+    <div id="dashboardSection">
+      <div class="kpi-cards">
+        <div class="kpi">
+          <h3 data-translate="Total Devices">Total Devices</h3>
+          <p id="totalDevices">0</p>
+        </div>
+        <div class="kpi">
+          <h3 data-translate="Open Ports">Open Ports</h3>
+          <p id="totalPorts">0</p>
+        </div>
+        <div class="kpi">
+          <h3 data-translate="Risky Devices">Risky Devices</h3>
+          <p id="riskyDevices">0</p>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <button id="scanBtn"><i class="fas fa-play"></i> <span data-translate="Scan">Scan</span></button>
+        <button id="stopBtn" disabled><i class="fas fa-stop"></i> <span data-translate="Stop">Stop</span></button>
+        <label><input type="checkbox" id="portScan"> <span data-translate="Scan open ports">Scan open ports</span></label>
+        <div class="scan-mode-section">
+          <label><input type="radio" name="scanMode" id="autoMode" checked> <span data-translate="Automatic">Automatic</span></label>
+          <label><input type="radio" name="scanMode" id="manualMode"> <span data-translate="Manual IP range">Manual IP Range</span></label>
+        </div>
+        <div class="manual-range-container" style="display:none;">
+          <input type="text" id="manualRange" class="manual-range-input"
+                 data-translate-placeholder="Enter IP range (e.g. 192.168.1.0/24)"
+                 placeholder="Enter IP range (e.g. 192.168.1.0/24)"/>
+        </div>
+      </div>
+
+      <div class="status" id="status" data-translate="Ready">Ready</div>
+    </div>
+
+    <div id="scanResultsSection" style="display:none;">
+      <div class="results-header">
+        <h2 data-translate="Scan Results">Scan Results</h2>
+        <input type="text" id="historyDateFilter" data-translate-placeholder="Filter by date" placeholder="Filter by date" class="date-filter-input"/>
+      </div>
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th data-translate="Date/Time">Date/Time</th>
+            <th data-translate="Device Count">Device Count</th>
+            <th data-translate="IP List">IP List</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <div id="noHistoryMsg" data-translate="No records found.">No records found.</div>
+    </div>
+
+    <div id="settingsSection" style="display:none;">
+      <div class="settings-container">
+        <h2 data-translate="Settings">Settings</h2>
+        <div class="setting-group">
+          <h3 data-translate="Language / Dil">Language / Dil</h3>
+          <div class="setting-item">
+            <label for="languageSelect" data-translate="Select Language:">Select Language:</label>
+            <select id="languageSelect">
+              <option value="en">English</option>
+              <option value="tr">Türkçe</option>
+            </select>
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3 data-translate="Theme / Tema">Theme / Tema</h3>
+          <div class="setting-item">
+            <label for="themeSelect" data-translate="Select Theme:">Select Theme:</label>
+            <select id="themeSelect">
+              <option value="dark">Dark Mode</option>
+              <option value="light">Light Mode</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3 data-translate="Scan Settings">Scan Settings</h3>
+          <div class="setting-item">
+            <label for="pingTimeout" data-translate="Ping Timeout (ms):">Ping Timeout (ms):</label>
+            <input type="number" id="pingTimeout" min="500" max="5000" value="1000" step="100">
+          </div>
+          <div class="setting-item">
+            <label for="maxWorkers" data-translate="Max Concurrent Workers:">Max Concurrent Workers:</label>
+            <input type="number" id="maxWorkers" min="10" max="100" value="50" step="5">
+          </div>
+          <div class="setting-item">
+            <label for="commonPorts" data-translate="Common Ports to Scan:">Common Ports to Scan:</label>
+            <textarea id="commonPorts" rows="3" placeholder="21,22,23,25,53,80,110,143,443,993,995,3306,3389,5432,8080"></textarea>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3 data-translate="Display Settings">Display Settings</h3>
+          <div class="setting-item">
+            <label for="maxHistoryRecords" data-translate="Max History Records:">Max History Records:</label>
+            <input type="number" id="maxHistoryRecords" min="10" max="200" value="50" step="10">
+          </div>
+          <div class="setting-item">
+            <label for="showOfflineDevices" data-translate="Show Offline Devices:">Show Offline Devices:</label>
+            <input type="checkbox" id="showOfflineDevices">
+          </div>
+          <div class="setting-item">
+            <label for="autoRefreshInterval" data-translate="Auto Refresh Interval (seconds):">Auto Refresh Interval (seconds):</label>
+            <input type="number" id="autoRefreshInterval" min="0" max="60" value="5" step="1">
+            <small data-translate="0 = Disabled">0 = Disabled</small>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3 data-translate="Export Settings">Export Settings</h3>
+          <div class="setting-item">
+            <label for="exportFormat" data-translate="Default Export Format:">Default Export Format:</label>
+            <select id="exportFormat">
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="xml">XML</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="includePortsInExport" data-translate="Include Port Information:">Include Port Information:</label>
+            <input type="checkbox" id="includePortsInExport" checked>
+          </div>
+        </div>
+
+        <div class="settings-actions">
+          <button id="saveSettingsBtn" class="settings-btn">
+            <i class="fas fa-save"></i> <span data-translate="Save Settings">Save Settings</span>
+          </button>
+          <button id="resetSettingsBtn" class="settings-btn">
+            <i class="fas fa-undo"></i> <span data-translate="Reset to Defaults">Reset to Defaults</span>
+          </button>
+          <button id="exportSettingsBtn" class="settings-btn">
+            <i class="fas fa-download"></i> <span data-translate="Export Settings">Export Settings</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="dashboardResultTableWrapper">
+      <table id="resultTable" style="display:none;">
+        <thead>
+          <tr>
+            <th></th>
+            <th data-translate="Name">Name</th>
+            <th data-translate="IP">IP</th>
+            <th data-translate="Manufacturer">Manufacturer</th>
+            <th data-translate="MAC Address">MAC Address</th>
+            <th data-translate="Open Ports">Open Ports</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
